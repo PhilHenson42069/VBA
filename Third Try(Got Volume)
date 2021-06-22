@@ -1,0 +1,75 @@
+Sub VBAHomework()
+
+Dim Ticker As String
+Dim LastRow As Double
+Dim TickerRow As Integer
+Dim OpenPrice As Double
+Dim ClosePrice As Double
+Dim YearlyChange As Double
+Dim Volume As Double
+Dim PercentChange As Double
+
+
+OpenPrice = 0
+Volume = 0
+ClosePrice = 0
+
+Range("I1").Value = "Ticker"
+Range("K1").Value = "Percent Change"
+Range("L1").Value = "Total Stock Volume"
+Range("J1").Value = "YearlyChange"
+
+TickerRow = 1
+
+LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+
+
+Range("J1").Value = "YearlyChange"
+
+
+OpenPrice = Cells(2, 3).Value
+'Loops for all sections
+
+For i = 2 To LastRow
+
+ If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+Ticker = Cells(i, 1).Value
+
+TickerRow = TickerRow + 1
+ClosePrice = Cells(i, 6).Value
+
+YearlyChange = ClosePrice - OpenPrice
+Range("I" & TickerRow).Value = Ticker
+
+Range("J" & TickerRow).Value = YearlyChange
+
+PercentChange = (YearlyChange / OpenPrice) * 100
+
+Range("K" & TickerRow).Value = PercentChange
+
+Volume = Cells(i, 7).Value
+Range("L" & TickerRow).Value = Volume
+
+
+
+End If
+
+  'Conditional formatting
+        If YearlyChange > 0 Then
+            'Green
+            Range("J" & TickerRow).Interior.ColorIndex = 43
+        ElseIf YearlyChange < 0 Then
+            'Red
+            Range("J" & TickerRow).Interior.ColorIndex = 22
+
+
+ End If
+ 
+Next i
+
+
+
+
+
+End Sub
