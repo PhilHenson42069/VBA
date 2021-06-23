@@ -1,0 +1,125 @@
+Sub VBAHomework()
+
+Dim sheets As Worksheet
+For Each sheets In ThisWorkbook.Worksheets
+sheets.Activate
+
+Dim Ticker As String
+Dim LastRow As Double
+Dim TickerRow As Integer
+Dim OpenPrice As Double
+Dim ClosePrice As Double
+Dim YearlyChange As Double
+Dim Volume As Double
+Dim PercentChange As Double
+
+Dim GreatestIncrease As Double
+Dim GreatestDecrease As Double
+Dim GreatestTotalVolume As Double
+Dim T1 As String
+Dim T2 As String
+Dim T3 As String
+
+'give things value
+
+OpenPrice = 0
+Volume = 0
+ClosePrice = 0
+GreatestIncrease = 0
+GreatestDecrease = 0
+GreatestTotalVolume = 0
+
+
+Range("I1").Value = "Ticker"
+Range("K1").Value = "Percent Change"
+Range("L1").Value = "Total Stock Volume"
+Range("J1").Value = "YearlyChange"
+Range("N2").Value = "GreatestIncrease"
+Range("N3").Value = "GreatestDecrease"
+Range("N4").Value = "GreatestTotalVolume"
+Range("O1").Value = "Ticker"
+Range("P1").Value = "Value"
+
+
+
+
+TickerRow = 2
+
+LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+
+
+Range("J1").Value = "YearlyChange"
+
+
+OpenPrice = Cells(2, 3).Value
+'Loops for all sections
+
+For i = 2 To LastRow
+
+ If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+Ticker = Cells(i, 1).Value
+
+ClosePrice = Cells(i, 6).Value
+
+YearlyChange = ClosePrice - OpenPrice
+Range("I" & TickerRow).Value = Ticker
+
+Range("J" & TickerRow).Value = YearlyChange
+
+PercentChange = (YearlyChange / OpenPrice)
+
+Range("K" & TickerRow).Value = PercentChange
+
+Volume = Cells(i, 7).Value
+Volume = Volume + Cells(i, 7).Value
+
+Range("L" & TickerRow).Value = Volume
+
+TickerRow = TickerRow + 1
+
+   If Volume > GreatestTotalVolume Then
+                        GreatestTotalVolume = Volume
+                        T1 = Ticker
+                        Range("P4").Value = GreatestTotalVolume
+                        Range("O4").Value = T1
+                    End If
+                    
+    If PercentChange > GreatestIncrease Then
+                        GreatestIncrease = PercentChange
+                        T2 = Ticker
+                        Range("P2").Value = GreatestIncrease
+                        Range("O2").Value = T2
+                    End If
+
+      If PercentChange < GreatestDecrease Then
+                        GreatestDecrease = PercentChange
+                        T3 = Ticker
+                        Range("P3").Value = GreatestDecrease
+                        Range("O3").Value = T3
+                    End If
+                    
+    
+
+
+End If
+
+  'Conditional formatting
+        If YearlyChange > 0 Then
+            'Green
+            Range("J" & TickerRow).Interior.ColorIndex = 43
+        ElseIf YearlyChange < 0 Then
+            'Red
+            Range("J" & TickerRow).Interior.ColorIndex = 22
+
+
+
+
+ End If
+ 
+Next i
+
+
+Next sheets
+
+End Sub
